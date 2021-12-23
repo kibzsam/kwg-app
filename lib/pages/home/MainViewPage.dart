@@ -9,7 +9,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'Home.dart';
 
 class MainView extends StatelessWidget {
-  _launchURL(String _url) async => await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+  launchURL(String url) async {
+    if (!url.contains('http')) url = 'https://$url';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +45,7 @@ class MainView extends StatelessWidget {
             locator!<AppRoute>().navigateAndRemoveUntil(Home());
           }
           if (value == 2) {
-            _launchURL('kwgsoftworks.com');
+            launchURL('kwgsoftworks.com');
           }
         },
         items: [
